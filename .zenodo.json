@@ -1,0 +1,43 @@
+{
+  "title": "Signal-encrypting DM-TMA: interactive web demonstrator",
+  "upload_type": "software",
+  "description": "<p>Companion software for the letter <em>Time-Modulated Arrays with Signal Encryption for Enhanced Directional Modulation Security</em> (R. Maneiro-Catoira, J. Brégains, J. A. García-Naya and L. Castedo), submitted to the IEEE Antennas and Wireless Propagation Letters.</p><p>It contains an interactive offline web demonstrator (HTML and JavaScript) of the proposed signal-encrypting directional-modulation time-modulated array, which evaluates the Σ/Δ patterns of the two independently steerable harmonic beams, the angular SINR, the QPSK BER, the secrecy capacity and the constellations before and after descrambling, together with its user tutorial.</p><p>Live demonstrator: <a href=\"https://gtec-udc.github.io/tma_signal_encryption_dm/\">https://gtec-udc.github.io/tma_signal_encryption_dm/</a></p><p>AI assistants were used in the development of the demonstrator and its tutorial; the authors reviewed and validated the models and results.</p>",
+  "creators": [
+    {
+      "name": "Maneiro-Catoira, Roberto",
+      "affiliation": "CITIC Research Center & Department of Computer Engineering, Universidade da Coruña",
+      "orcid": "0000-0002-0533-9092"
+    },
+    {
+      "name": "Brégains, Julio",
+      "affiliation": "CITIC Research Center & Department of Computer Engineering, Universidade da Coruña",
+      "orcid": "0000-0002-9381-3259"
+    },
+    {
+      "name": "García-Naya, José A.",
+      "affiliation": "CITIC Research Center & Department of Computer Engineering, Universidade da Coruña",
+      "orcid": "0000-0002-1944-4678"
+    },
+    {
+      "name": "Castedo, Luis",
+      "affiliation": "CITIC Research Center & Department of Computer Engineering, Universidade da Coruña",
+      "orcid": "0000-0002-3801-012X"
+    }
+  ],
+  "keywords": [
+    "time-modulated arrays",
+    "directional modulation",
+    "physical-layer security",
+    "signal encryption",
+    "secrecy capacity",
+    "antenna arrays"
+  ],
+  "license": "MIT",
+  "access_right": "open",
+  "communities": [
+    {
+      "identifier": "gtec"
+    }
+  ],
+  "notes": "This work was funded in part by the Xunta de Galicia under Grant ED431C 2024/18; and in part by MICIU/AEI/10.13039/501100011033 under grants PID2022-137099NB-C42 (MADDIE) and PID2025-169068NB-C31 (GEMMA); and by ERDF/EU."
+}

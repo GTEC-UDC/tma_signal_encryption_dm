@@ -1,0 +1,63 @@
+{
+  "name": "Signal-Encrypting DM-TMA Demonstrator",
+  "paperTitle": "Time-Modulated Arrays with Signal Encryption for Enhanced Directional Modulation Security",
+  "authors": [
+    "Roberto Maneiro-Catoira",
+    "Julio Bregains",
+    "Jose A. Garcia-Naya",
+    "Luis Castedo"
+  ],
+  "edition": "offline-web",
+  "version": "1.0",
+  "entryPoint": "index.html",
+  "runtime": {
+    "internetRequired": false,
+    "accountRequired": false,
+    "externalNetworkRequests": false,
+    "directFileOpeningSupported": true,
+    "optionalLauncher": "Visual Studio Code + Live Server"
+  },
+  "paperBaseline": {
+    "elements2N": 20,
+    "spacingLambda": 0.5,
+    "theta1Deg": 110,
+    "theta2Deg": 60,
+    "carrierGHz": 2.4,
+    "bitRateMbps": 2,
+    "rrcRolloff": 0.25,
+    "occupiedBandwidthMHz": 1.25,
+    "faMHz": 1,
+    "fbMHz": 2,
+    "fbToOccupiedBandwidthRatio": 1.6,
+    "snrDb": 25,
+    "prPhaseStatesM": 50,
+    "zeta": 2,
+    "tprMicroseconds": 1,
+    "seed": 2606,
+    "delayStepPs": 0
+  },
+  "referenceResults": {
+    "angularSinrContrastDb": 21,
+    "intendedSinrDb": 25,
+    "strongestUnintendedSinrDbApprox": 4,
+    "secrecyCapacityBitsPerSecondPerHzApprox": 6.5,
+    "timeModulationEfficiency": 0.66,
+    "nearestUnusedHarmonicRelativeDb": -9.54,
+    "strongestDegenerateComponentRelativeDb": -26.4
+  },
+  "implementedRelations": [
+    "fb = 2 fa >= 1.1 Bf",
+    "TPR = zeta Tb",
+    "h_n(t) = a(t-D_n^1)b(t-D_n^3)/sqrt(2) + a(t-D_n^2)b(t-D_n^4)/sqrt(2)",
+    "D_n^1 and D_n^3 synthesize Sigma patterns",
+    "D_n^2 and D_n^4 synthesize Delta patterns",
+    "P_res/P_useful = 2 Delta_t/TPR",
+    "Cs = [log2(1+gamma_b) - log2(1+gamma_e)]+"
+  ],
+  "modelAssumptions": [
+    "Uniformly excited isotropic array elements",
+    "Ideal RF switches except optional delay quantization",
+    "No mutual coupling or RF losses",
+    "Coherent QPSK receiver synchronized to the pseudorandom key"
+  ]
+}

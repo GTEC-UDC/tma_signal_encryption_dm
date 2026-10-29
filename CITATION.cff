@@ -1,0 +1,48 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it using the metadata from this file and the associated letter."
+type: software
+title: "Signal-encrypting DM-TMA: interactive web demonstrator"
+version: 1.0.0
+date-released: 2026-10-29
+license: MIT
+repository-code: "https://github.com/GTEC-UDC/tma_signal_encryption_dm"
+url: "https://gtec-udc.github.io/tma_signal_encryption_dm/"
+keywords:
+  - time-modulated arrays
+  - directional modulation
+  - physical-layer security
+  - signal encryption
+  - secrecy capacity
+  - antenna arrays
+authors:
+  - family-names: Maneiro-Catoira
+    given-names: Roberto
+    orcid: "https://orcid.org/0000-0002-0533-9092"
+    affiliation: "CITIC Research Center & Department of Computer Engineering, Universidade da Coruña"
+  - family-names: Brégains
+    given-names: Julio
+    orcid: "https://orcid.org/0000-0002-9381-3259"
+    affiliation: "CITIC Research Center & Department of Computer Engineering, Universidade da Coruña"
+  - family-names: García-Naya
+    given-names: José A.
+    orcid: "https://orcid.org/0000-0002-1944-4678"
+    affiliation: "CITIC Research Center & Department of Computer Engineering, Universidade da Coruña"
+  - family-names: Castedo
+    given-names: Luis
+    orcid: "https://orcid.org/0000-0002-3801-012X"
+    affiliation: "CITIC Research Center & Department of Computer Engineering, Universidade da Coruña"
+references:
+  - type: article
+    title: "Time-Modulated Arrays with Signal Encryption for Enhanced Directional Modulation Security"
+    authors:
+      - family-names: Maneiro-Catoira
+        given-names: Roberto
+      - family-names: Brégains
+        given-names: Julio
+      - family-names: García-Naya
+        given-names: José A.
+      - family-names: Castedo
+        given-names: Luis
+    journal: "IEEE Antennas and Wireless Propagation Letters"
+    year: 2026
+    notes: "Submitted."

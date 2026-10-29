@@ -1,0 +1,38 @@
+{
+  "package": "TMA_Signal_Encryption_Demonstrator_Web",
+  "version": "1.0",
+  "generatedAt": "2026-09-18T14:12:50.809Z",
+  "offline": true,
+  "files": [
+    {
+      "path": "app.js",
+      "bytes": 237041,
+      "sha256": "1eb1b494d4d8eb0a0c9d7ae4be0b2381cfad436c4a420d0e0148715790f91aca"
+    },
+    {
+      "path": "data/model-info.json",
+      "bytes": 1895,
+      "sha256": "f59c4ce3cd09e5abbfbb9078370b124f7cec31fbae3919a8af3cacb13fe4ca17"
+    },
+    {
+      "path": "favicon.svg",
+      "bytes": 650,
+      "sha256": "1d052ff1f6a86d43105d61b6d2da1c663aa9c4ee8ae56cf2d5a5bbad9c5e864d"
+    },
+    {
+      "path": "index.html",
+      "bytes": 811,
+      "sha256": "d6efcbf504f617109451e01ca5aadaf96c27aa3c9e3629728d60e918148951f1"
+    },
+    {
+      "path": "README_ES.txt",
+      "bytes": 3035,
+      "sha256": "a21e8be84e76d2c3d1aad2ef82604bbf885e3eeed3bdc3788c05a6e1a6fa8bf2"
+    },
+    {
+      "path": "styles.css",
+      "bytes": 34312,
+      "sha256": "48be701a034f99d41d1aa37448383110a56e32e3337195d9b695fb1a19878a9f"
+    }
+  ]
+}
