@@ -322,7 +322,7 @@ $\zeta=(f_b/B_f)(1+\alpha)=2$); for any other update interval the conservative
 pre-matched-filter value $2\delta$ is used, and the timing panel says so. The
 BER indicator uses $\gamma_{\mathrm{eff}}=(1/\gamma+r)^{-1}$, with $r$ the
 post-matched-filter ratio, and
-$P_b=\tfrac12\operatorname{erfc}(\sqrt{\gamma_{\mathrm{eff}}})$. The selected
+$P_b=\tfrac12\mathrm{erfc}(\sqrt{\gamma_{\mathrm{eff}}})$. The selected
 Σ/Δ SINR is used directly as a per-bit SINR, which is the convention of the BER
 curves in Fig. 3(b) of the paper. It is an analytical indicator, not an error
 count from the plotted 180 symbols. **No key** displays approximately 0.5 by

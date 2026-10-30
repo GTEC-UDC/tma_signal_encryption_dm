@@ -109,7 +109,7 @@ signal $s(t)$ through a cell with four delays:
 
 ```math
 h_n(t)=\frac{1}{\sqrt{2}}\,a\!\left(t-D_n^1\right)b\!\left(t-D_n^3\right)
-+\frac{1}{\sqrt{2}}\,a\!\left(t-D_n^2\right)b\!\left(t-D_n^4\right). \tag{1}
++\frac{1}{\sqrt{2}}\,a\!\left(t-D_n^2\right)b\!\left(t-D_n^4\right). \qquad (1)
 ```
 
 Delays $D_n^1$ and $D_n^3$ synthesize the sum-type (Σ) patterns, whereas
@@ -117,7 +117,7 @@ $D_n^2$ and $D_n^4$ synthesize the difference-type (Δ) patterns. The
 demonstrator focuses on the two dominant harmonics
 
 ```math
-f^{-1,1}=f_c-f_a+f_b,\qquad f^{1,1}=f_c+f_a+f_b, \tag{2}
+f^{-1,1}=f_c-f_a+f_b,\qquad f^{1,1}=f_c+f_a+f_b, \qquad (2)
 ```
 
 which can be independently steered toward $\theta_2$ and $\theta_1$,
@@ -128,14 +128,14 @@ respectively.
 For QPSK with root-raised-cosine filtering, the demonstrator computes
 
 ```math
-B_f=\frac{R_b(1+\alpha)}{2},\qquad f_b=\rho B_f,\qquad f_a=\frac{f_b}{2}, \tag{3}
+B_f=\frac{R_b(1+\alpha)}{2},\qquad f_b=\rho B_f,\qquad f_a=\frac{f_b}{2}, \qquad (3)
 ```
 
 where $\rho=f_b/B_f$ is the control labeled `Spectral spacing`. The delay
 update interval is
 
 ```math
-T_{\mathrm{PR}}=\zeta T_b=\frac{\zeta}{f_b}, \tag{4}
+T_{\mathrm{PR}}=\zeta T_b=\frac{\zeta}{f_b}, \qquad (4)
 ```
 
 where $T_b=1/f_b$ is the period of $b(t)$. In the benchmark, $f_b=R_b$, so
@@ -146,7 +146,7 @@ In each interval, two independent pseudorandom phases, $\phi_\Sigma$ and
 $\phi_\Delta$, are selected from an alphabet of $M$ equiprobable values:
 
 ```math
-\phi_\Sigma,\ \phi_\Delta\in\left\lbrace\frac{2\pi k}{M}\right\rbrace_{k=0}^{M-1}. \tag{5}
+\phi_\Sigma,\ \phi_\Delta\in\left\lbrace\frac{2\pi k}{M}\right\rbrace_{k=0}^{M-1}. \qquad (5)
 ```
 
 An authorized receiver knows the corresponding sequence and can remove the
@@ -168,20 +168,20 @@ from the normalized pattern powers:
 ```math
 \gamma_\Sigma(\theta)=\frac{\lvert F_\Sigma(\theta)\rvert^2}{\lvert F_\Delta(\theta)\rvert^2+P_N},
 \qquad
-\gamma_\Delta(\theta)=\frac{\lvert F_\Delta(\theta)\rvert^2}{\lvert F_\Sigma(\theta)\rvert^2+P_N}, \tag{6}
+\gamma_\Delta(\theta)=\frac{\lvert F_\Delta(\theta)\rvert^2}{\lvert F_\Sigma(\theta)\rvert^2+P_N}, \qquad (6)
 ```
 
 with $P_N=10^{-\mathrm{SNR}/10}$. The displayed secrecy capacity is
 
 ```math
-C_s=\left[\log_2(1+\gamma_b)-\log_2(1+\gamma_e)\right]^+, \tag{7}
+C_s=\left[\log_2(1+\gamma_b)-\log_2(1+\gamma_e)\right]^+, \qquad (7)
 ```
 
 where $\gamma_b$ corresponds to the intended direction and $\gamma_e$ to the
 most favorable unintended point outside a ±8° sector around the main beam.
 
 The BER estimate uses the coherent QPSK expression
-$\mathrm{BER}=\tfrac{1}{2}\operatorname{erfc}\sqrt{\gamma}$, with the SINR
+$\mathrm{BER}=\tfrac{1}{2}\mathrm{erfc}\sqrt{\gamma}$, with the SINR
 taken per bit, which is the convention of the BER curves in Fig. 3(b) of the
 paper. In no-key mode,
 $\mathrm{BER}\simeq 0.5$ is displayed, corresponding to random decisions; this
@@ -315,7 +315,7 @@ $\omega^{1,1}/\theta_1$ and orange for $\omega^{-1,1}/\theta_2$. The side boxes
 report the active harmonic, its pointing direction, and the physical aperture
 
 ```math
-L=(2N-1)\,d\,\lambda_c. \tag{8}
+L=(2N-1)\,d\,\lambda_c. \qquad (8)
 ```
 
 ### 7.3 `Pattern` and `SINR` buttons
@@ -414,7 +414,7 @@ Since the $M$ phase differences are equiprobable, the residual-to-useful power
 ratio before matched filtering (MF) is
 
 ```math
-\left.\frac{P_{\mathrm{res}}}{P_{\mathrm{useful}}}\right|_{\text{before MF}}=2\,\frac{\Delta t}{T_{\mathrm{PR}}}. \tag{9}
+\left.\frac{P_{\mathrm{res}}}{P_{\mathrm{useful}}}\right|_{\text{before MF}}=2\,\frac{\Delta t}{T_{\mathrm{PR}}}. \qquad (9)
 ```
 
 The uncompensated fraction lies at the edge of the symbol, where the matched
@@ -422,7 +422,7 @@ filter gives little weight. For $T_{\mathrm{PR}}=T_s$, as in the benchmark, the
 ratio after matched filtering is only about
 
 ```math
-\left.\frac{P_{\mathrm{res}}}{P_{\mathrm{useful}}}\right|_{\text{after MF}}\simeq\left(\frac{\Delta t}{T_{\mathrm{PR}}}\right)^2, \tag{10}
+\left.\frac{P_{\mathrm{res}}}{P_{\mathrm{useful}}}\right|_{\text{after MF}}\simeq\left(\frac{\Delta t}{T_{\mathrm{PR}}}\right)^2, \qquad (10)
 ```
 
 and this is the value that determines the BER. Both expressions are
@@ -553,7 +553,7 @@ To reproduce the benchmark:
 For $\omega^{1,1}$, the demonstrator displays approximately
 
 ```math
-\gamma_b=25.0\ \mathrm{dB},\qquad \gamma_e=4.4\ \mathrm{dB},\qquad C_s=6.39\ \mathrm{bit/s/Hz}. \tag{11}
+\gamma_b=25.0\ \mathrm{dB},\qquad \gamma_e=4.4\ \mathrm{dB},\qquad C_s=6.39\ \mathrm{bit/s/Hz}. \qquad (11)
 ```
 
 The paper reports $(\gamma_b,\gamma_e)\approx(25,4.5)$ dB, i.e., a 20.5 dB
