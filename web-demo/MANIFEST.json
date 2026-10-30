@@ -1,13 +1,28 @@
 {
   "package": "TMA_Signal_Encryption_Demonstrator_Web",
   "version": "1.0",
-  "generatedAt": "2026-09-18T14:12:50.809Z",
+  "generatedAt": "2026-10-29T21:46:56.404Z",
   "offline": true,
   "files": [
+    {
+      "path": "README_ES.txt",
+      "bytes": 3035,
+      "sha256": "a21e8be84e76d2c3d1aad2ef82604bbf885e3eeed3bdc3788c05a6e1a6fa8bf2"
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES.md",
+      "bytes": 986,
+      "sha256": "8c5dcf6b49641c78ef44b6c79505144323602e5e15c736c08c5f1e6eea6aff43"
+    },
     {
       "path": "app.js",
       "bytes": 237041,
       "sha256": "1eb1b494d4d8eb0a0c9d7ae4be0b2381cfad436c4a420d0e0148715790f91aca"
+    },
+    {
+      "path": "app.js.LEGAL.txt",
+      "bytes": 1528,
+      "sha256": "cd7dec749043f2074e9799163f9c46a6ba714fd4889f07150cc1165c816ea1d3"
     },
     {
       "path": "data/model-info.json",
@@ -25,14 +40,24 @@
       "sha256": "d6efcbf504f617109451e01ca5aadaf96c27aa3c9e3629728d60e918148951f1"
     },
     {
-      "path": "README_ES.txt",
-      "bytes": 3035,
-      "sha256": "a21e8be84e76d2c3d1aad2ef82604bbf885e3eeed3bdc3788c05a6e1a6fa8bf2"
+      "path": "licenses/react-LICENSE.txt",
+      "bytes": 1088,
+      "sha256": "da6d3703ed11cbe42bd212c725957c98da23cbff1998c05fa4b3d976d1a58e93"
+    },
+    {
+      "path": "licenses/react-dom-LICENSE.txt",
+      "bytes": 1088,
+      "sha256": "da6d3703ed11cbe42bd212c725957c98da23cbff1998c05fa4b3d976d1a58e93"
+    },
+    {
+      "path": "licenses/scheduler-LICENSE.txt",
+      "bytes": 1088,
+      "sha256": "da6d3703ed11cbe42bd212c725957c98da23cbff1998c05fa4b3d976d1a58e93"
     },
     {
       "path": "styles.css",
-      "bytes": 34312,
-      "sha256": "48be701a034f99d41d1aa37448383110a56e32e3337195d9b695fb1a19878a9f"
+      "bytes": 27001,
+      "sha256": "7a35b6226015aa3e8391d7f87666bd3c144c0c6e353d13ecc4175c1c1b2ecabc"
     }
   ]
 }

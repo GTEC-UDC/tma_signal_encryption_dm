@@ -1,7 +1,7 @@
 {
   "title": "Signal-encrypting DM-TMA: interactive web demonstrator",
   "upload_type": "software",
-  "description": "<p>Companion software for the letter <em>Time-Modulated Arrays with Signal Encryption for Enhanced Directional Modulation Security</em> (R. Maneiro-Catoira, J. Brégains, J. A. García-Naya and L. Castedo), submitted to the IEEE Antennas and Wireless Propagation Letters.</p><p>It contains an interactive offline web demonstrator (HTML and JavaScript) of the proposed signal-encrypting directional-modulation time-modulated array, which evaluates the Σ/Δ patterns of the two independently steerable harmonic beams, the angular SINR, the QPSK BER, the secrecy capacity and the constellations before and after descrambling, together with its user tutorial.</p><p>Live demonstrator: <a href=\"https://gtec-udc.github.io/tma_signal_encryption_dm/\">https://gtec-udc.github.io/tma_signal_encryption_dm/</a></p><p>AI assistants were used in the development of the demonstrator and its tutorial; the authors reviewed and validated the models and results.</p>",
+  "description": "<p>Companion software for the letter <em>Time-Modulated Arrays with Signal Encryption for Enhanced Directional Modulation Security</em> (R. Maneiro-Catoira, J. Brégains, J. A. García-Naya and L. Castedo), submitted to the IEEE Antennas and Wireless Propagation Letters.</p><p>It contains an interactive offline web demonstrator (HTML and JavaScript) of the proposed signal-encrypting directional-modulation time-modulated array, which evaluates the Σ/Δ patterns of the two independently steerable harmonic beams, the angular SINR, the QPSK BER, the secrecy capacity and the constellations before and after descrambling, together with its user tutorial and its complete TypeScript/React source code.</p><p>Live demonstrator: <a href=\"https://gtec-udc.github.io/tma_signal_encryption_dm/\">https://gtec-udc.github.io/tma_signal_encryption_dm/</a></p><p>User tutorial: <a href=\"https://github.com/GTEC-UDC/tma_signal_encryption_dm/blob/main/docs/TUTORIAL.md\">docs/TUTORIAL.md</a> (also included in this archive).</p><p>AI assistants were used in the development of the demonstrator and its tutorial; the authors reviewed and validated the models and results.</p>",
   "creators": [
     {
       "name": "Maneiro-Catoira, Roberto",
@@ -39,5 +39,12 @@
       "identifier": "gtec"
     }
   ],
-  "notes": "This work was funded in part by the Xunta de Galicia under Grant ED431C 2024/18; and in part by MICIU/AEI/10.13039/501100011033 under grants PID2022-137099NB-C42 (MADDIE) and PID2025-169068NB-C31 (GEMMA); and by ERDF/EU."
+  "notes": "This work was funded in part by the Xunta de Galicia under Grant ED431C 2024/18; and in part by MICIU/AEI/10.13039/501100011033 under grants PID2022-137099NB-C42 (MADDIE) and PID2025-169068NB-C31 (GEMMA); and by ERDF/EU.",
+  "related_identifiers": [
+    {
+      "identifier": "https://github.com/GTEC-UDC/tma_signal_encryption_dm/blob/main/docs/TUTORIAL.md",
+      "relation": "isDocumentedBy",
+      "resource_type": "publication-other"
+    }
+  ]
 }

@@ -16,17 +16,19 @@ corresponding key can coherently reconstruct the signal, and no optimization is
 required at the transmitter.
 
 **Live demonstrator:** <https://gtec-udc.github.io/tma_signal_encryption_dm/>
+· **User tutorial:** [`docs/TUTORIAL.md`](docs/TUTORIAL.md)
 
-> **Status: preview.** The demonstrator and its tutorial are being updated to the
-> final parameters of the letter (e.g., M = 64 scrambling phases instead of 50)
-> and to the timing-offset model of its revised version.
+> **Status: preview.** The demonstrator is being updated to the final
+> parameters of the letter (M = 64 scrambling phases instead of 50) and to the
+> timing-offset model of its revised version. The tutorial already describes
+> the final values.
 
 ## Contents
 
 | Folder | Content |
 |---|---|
-| [`web-demo/`](web-demo/) | Interactive offline web demonstrator (HTML + JavaScript). |
-| [`docs/`](docs/) | User tutorial of the demonstrator (PDF). |
+| [`web-demo/`](web-demo/) | Interactive web demonstrator: ready-to-run build (`index.html`, `app.js`, `styles.css`) and its complete TypeScript/React source, build and test scripts. |
+| [`docs/`](docs/) | [User tutorial](docs/TUTORIAL.md) of the demonstrator. |
 
 ### Web demonstrator
 
@@ -39,12 +41,28 @@ transmitted.
 
 To use it, open the live version above, or download this repository and
 double-click `web-demo/index.html`. No installation, account or Internet
-connection is needed. See the [tutorial](docs/) for a description of every
-control and for the reference case of the letter.
+connection is needed. See the [tutorial](docs/TUTORIAL.md) for a description of
+every control, the reference case of the letter and guided experiments.
 
 The model assumes uniformly excited isotropic elements, ideal switches, no
 mutual coupling or RF losses, and a coherent receiver synchronized with the
 pseudorandom key. Delay quantization is offered as an optional extension.
+
+### Source code and rebuilding
+
+The numerical model and the interface are in `web-demo/src/App.tsx`. With
+Node.js 22.13 or later, run in `web-demo/`:
+
+```bash
+npm ci          # install the pinned development dependencies
+npm run build   # regenerate app.js, styles.css and MANIFEST.json
+npm test        # type-check, numerical benchmark and package checks
+```
+
+Commit the regenerated files together with the source changes: GitHub Pages
+serves `web-demo/` as it is, without a build step. The
+[developer README](web-demo/README.md) describes the source map, the
+implemented equations and the development server.
 
 ## How to cite
 
@@ -67,8 +85,9 @@ against the analysis of the letter.
 - Source code (`web-demo/`): [MIT License](LICENSE).
 - Documentation (`docs/`): [Creative Commons Attribution 4.0 International
   (CC BY 4.0)](docs/LICENSE.md).
-- Third-party components bundled in the demonstrator are listed in
-  [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md).
+- Third-party components bundled in `web-demo/app.js` (React, React DOM and
+  Scheduler, MIT License) are listed in
+  [`web-demo/THIRD_PARTY_NOTICES.md`](web-demo/THIRD_PARTY_NOTICES.md).
 
 ## Funding
 
