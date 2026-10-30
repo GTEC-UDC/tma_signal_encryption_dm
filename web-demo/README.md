@@ -179,8 +179,8 @@ this panel is not an FFT of a simulated switched RF waveform.
 | Authorized · Δ key | Preset | Selects Δ recovery and moves the probe to the largest sampled Δ-key SINR. |
 | No key | Preset | Leaves the waveform scrambled and uses a random-guess BER indicator. |
 | Probe angle | 110°; 0–180° / 0.5° | Observation direction for constellations and receiver metrics; can be adjusted after a preset. |
-| PR phase states M | 50; 2–100 / 1 | Number of uniformly spaced possible PR phase values on the complex unit circle. |
-| Timing mismatch | 0%; 0–100% / 2% TPR | Fractional key timing error used in the residual-power law and constellation illustration. |
+| PR phase states M | 64; 2–100 / 1 | Number of uniformly spaced possible PR phase values on the complex unit circle. A warning is shown when M is not a multiple of 4, because the scrambled QPSK phase then leaks data information. |
+| Timing mismatch | 0%; 0–20% / 0.5% TPR | Fractional key timing error used in the residual-power law and constellation illustration. |
 | PR seed | 2606; displayed numeric bounds 1–999999 | Seed for reproducible phase and noise sequences. |
 | Next key state → | 96-state cyclic sequence | Advances the delay-table PR frame; shared with the Delay synthesis tab. |
 
@@ -221,6 +221,7 @@ to the tested version. The following functions provide useful entry points:
 | `expj`, `add`, `mul`, `scale`, `divide`, `abs2` | Complex-number arithmetic. |
 | `mod`, `wrapPhase`, `db10`, `dbToLinear` | Period wrapping and power/log conversions. |
 | `erf`, `qpskBer` | Error-function approximation and analytical BER indicator. |
+| `timingResidual` | Residual-to-useful power ratios of a descrambling timing offset, before and after matched filtering. |
 | `mulberry32`, `gaussian` | Seeded pseudorandom generation and Gaussian noise. |
 | `buildPhaseSequence` | Two independent draws per state for Σ and Δ phases. |
 | `solveDelays` | Per-element four-delay synthesis and optional quantization. |
@@ -229,8 +230,8 @@ to the tested version. The following functions provide useful entry points:
 | `RangeControl`, `Metric` | Reusable slider and numerical-result components. |
 | `Home` | State, derived quantities, angular sweep, constellations, controls and downloads. |
 
-`abs2`, `arrayFactor`, `buildPhaseSequence` and `solveDelays` are named exports
-used by the numerical tests. The default export renders the whole demonstrator.
+`abs2`, `arrayFactor`, `buildPhaseSequence`, `qpskBer`, `solveDelays` and
+`timingResidual` are named exports used by the numerical tests. The default export renders the whole demonstrator.
 
 ### Frequencies and geometry
 
@@ -313,18 +314,26 @@ clips angular SINR values to [−30, 35] dB. The metric cards use those sampled
 SINRs. This secrecy-capacity indicator is a model comparison, not a measured
 throughput or an end-to-end security guarantee.
 
-For timing mismatch fraction $\delta=\Delta t/T_{\mathrm{PR}}$, the residual
-power law is $P_{\mathrm{res}}/P_{\mathrm{useful}}=2\delta$. The BER indicator
-uses $\gamma_{\mathrm{eff}}=(1/\gamma+2\delta)^{-1}$ and
-$P_b=\tfrac12\operatorname{erfc}(\sqrt{\gamma_{\mathrm{eff}}})$.
-The selected Σ/Δ SINR is used directly in this demonstrator formula; no
-additional $E_s/N_0$ to $E_b/N_0$ conversion is inserted. It is an analytical
-indicator, not an error count from the plotted 180 symbols. **No key** displays
-approximately 0.5 by design.
+For timing mismatch fraction $\delta=\Delta t/T_{\mathrm{PR}}$, `timingResidual`
+implements the residual-to-useful power ratios of the paper (Section IV-C):
+$2\delta$ before matched filtering and $\delta^2$ after it. The second value
+was derived for $T_{\mathrm{PR}}=T_s$ (as in the benchmark, where
+$\zeta=(f_b/B_f)(1+\alpha)=2$); for any other update interval the conservative
+pre-matched-filter value $2\delta$ is used, and the timing panel says so. The
+BER indicator uses $\gamma_{\mathrm{eff}}=(1/\gamma+r)^{-1}$, with $r$ the
+post-matched-filter ratio, and
+$P_b=\tfrac12\operatorname{erfc}(\sqrt{\gamma_{\mathrm{eff}}})$. The selected
+Σ/Δ SINR is used directly as a per-bit SINR, which is the convention of the BER
+curves in Fig. 3(b) of the paper. It is an analytical indicator, not an error
+count from the plotted 180 symbols. **No key** displays approximately 0.5 by
+design.
 
-The constellation timing illustration applies an adjacent key phase to a
-fraction $\delta$ of samples. It does not simulate a complete asynchronous
-receiver or a continuous pulse-shaped waveform.
+For $T_{\mathrm{PR}}=T_s$, the constellation timing illustration multiplies
+every descrambled sample by $(1-w)+w\,e^{-j\Delta\phi}$, where $\Delta\phi$ is
+the phase step to the adjacent key state and $w=\delta/\sqrt{2}$, so that the
+mean residual power is $2w^2=\delta^2$. Otherwise, it applies the adjacent key
+phase to a fraction $\delta$ of samples. It does not simulate a complete
+asynchronous receiver or a continuous pulse-shaped waveform.
 
 ## Paper benchmark and verification
 
@@ -337,7 +346,7 @@ receiver or a continuous pulse-shaped waveform.
 | fa / fb | 1 MHz / 2 MHz |
 | fb / Bf | 1.6 |
 | ζ / TPR | 2 / 1 µs |
-| PR phase states / seed | 50 / 2606 |
+| PR phase states / seed | 64 / 2606 |
 | Peak SNR | 25 dB |
 | Delay resolution / timing mismatch | 0 ps / 0% |
 | Useful RF frequencies f₋ / f₊ | 2.401 GHz / 2.403 GHz |

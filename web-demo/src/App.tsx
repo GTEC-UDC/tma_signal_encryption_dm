@@ -75,9 +75,23 @@ function erf(value: number): number {
   return sign * y;
 }
 
+/** Gray-coded QPSK bit error rate, 0.5 erfc(sqrt(gamma)), with the SINR taken
+ *  per bit; this is the convention of the BER curves in Fig. 3(b) of the paper. */
 function qpskBer(sinrDb: number): number {
   const gamma = dbToLinear(sinrDb);
   return Math.max(0, 0.5 * (1 - erf(Math.sqrt(gamma))));
+}
+
+/**
+ * Residual-to-useful power ratios caused by a timing offset of the descrambling
+ * sequence (paper, Section IV-C): 2*dt/TPR before matched filtering and about
+ * (dt/TPR)^2 after it. The second expression was derived for TPR = Ts; for any
+ * other update interval the conservative pre-matched-filter value is used.
+ */
+function timingResidual(fraction: number, tprSeconds: number, symbolSeconds: number) {
+  const beforeMf = 2 * fraction;
+  const aligned = Math.abs(tprSeconds - symbolSeconds) <= 1e-6 * symbolSeconds;
+  return { beforeMf, afterMf: aligned ? fraction * fraction : beforeMf, aligned };
 }
 
 function mulberry32(seed: number) {
@@ -642,7 +656,7 @@ export default function Home() {
   const [rolloff, setRolloff] = useState(0.25);
   const [frequencyRatio, setFrequencyRatio] = useState(1.6);
   const [snrDb, setSnrDb] = useState(25);
-  const [prStates, setPrStates] = useState(50);
+  const [prStates, setPrStates] = useState(64);
   const [zeta, setZeta] = useState(2);
   const [seed, setSeed] = useState(2606);
   const [delayStepPs, setDelayStepPs] = useState(0);
@@ -766,6 +780,7 @@ export default function Home() {
     const fc = fcGHz * 1e9;
     const wavelength = C0 / fc;
     const tprSeconds = zeta / fb;
+    const symbolSeconds = 2 / (bitRateMbps * 1e6);
     return {
       bandwidthHz,
       fa,
@@ -773,11 +788,17 @@ export default function Home() {
       plus: fc + fa + fb,
       minus: fc - fa + fb,
       tprSeconds,
+      symbolSeconds,
       wavelength,
       apertureM: (elements - 1) * spacing * wavelength,
       guardRatio: fb / bandwidthHz,
     };
   }, [bitRateMbps, rolloff, frequencyRatio, zeta, fcGHz, elements, spacing]);
+
+  const timing = useMemo(
+    () => timingResidual(syncError / 100, signal.tprSeconds, signal.symbolSeconds),
+    [syncError, signal.tprSeconds, signal.symbolSeconds],
+  );
 
   const constellation = useMemo(() => {
     const random = mulberry32(seed + Math.round(probeAngle * 10) + harmonic * 97);
@@ -787,6 +808,10 @@ export default function Home() {
     const raw: Complex[] = [];
     const decoded: Complex[] = [];
     const syncFraction = syncError / 100;
+    // With TPR = Ts, every matched-filter output mixes a fraction w of the
+    // adjacent key state, so that 2w^2 = (dt/TPR)^2; otherwise a fraction dt/TPR
+    // of the samples takes the adjacent state, giving the pre-MF value 2dt/TPR.
+    const edgeWeight = syncFraction / Math.SQRT2;
 
     for (let index = 0; index < 180; index += 1) {
       const phiS = phaseSequence.sigma[index];
@@ -813,17 +838,26 @@ export default function Home() {
         let phaseDifference = nextPhase - currentPhase;
         while (phaseDifference > Math.PI) phaseDifference -= TAU;
         while (phaseDifference < -Math.PI) phaseDifference += TAU;
-        const mismatched = random() < syncFraction;
-        decoded.push(
-          divide(
-            received,
-            mul(selectedChannel, expj(mismatched ? phaseDifference : 0)),
-          ),
-        );
+        const draw = random();
+        if (timing.aligned) {
+          const keyFactor = add(
+            { re: 1 - edgeWeight, im: 0 },
+            scale(expj(-phaseDifference), edgeWeight),
+          );
+          decoded.push(mul(divide(received, selectedChannel), keyFactor));
+        } else {
+          const mismatched = draw < syncFraction;
+          decoded.push(
+            divide(
+              received,
+              mul(selectedChannel, expj(mismatched ? phaseDifference : 0)),
+            ),
+          );
+        }
       }
     }
     return { raw, decoded };
-  }, [config, harmonic, prStates, probeAngle, receiver, seed, snrDb, syncError]);
+  }, [config, harmonic, prStates, probeAngle, receiver, seed, snrDb, syncError, timing.aligned]);
 
   const setPaperPreset = () => {
     setElements(20);
@@ -835,7 +869,7 @@ export default function Home() {
     setRolloff(0.25);
     setFrequencyRatio(1.6);
     setSnrDb(25);
-    setPrStates(50);
+    setPrStates(64);
     setZeta(2);
     setDelayStepPs(0);
     setSyncError(0);
@@ -883,11 +917,19 @@ export default function Home() {
   const probeSigmaSinr = simulation.sinrSigmaDb[currentProbeIndex];
   const probeDeltaSinr = simulation.sinrDeltaDb[currentProbeIndex];
   const currentReceiverSinr = receiver === "delta" ? probeDeltaSinr : receiver === "eve" ? simulation.eveSinr : probeSigmaSinr;
-  const syncFraction = syncError / 100;
   const effectiveSinrLinear =
     receiver === "eve"
       ? 1
-      : 1 / (1 / dbToLinear(currentReceiverSinr) + 2 * syncFraction);
+      : 1 / (1 / dbToLinear(currentReceiverSinr) + timing.afterMf);
+  const superscript = (text: string) =>
+    text.replace(/[-0-9]/g, (c) => "⁻⁰¹²³⁴⁵⁶⁷⁸⁹"["-0123456789".indexOf(c)]);
+  const formatRatio = (value: number) => {
+    if (value === 0) return "0";
+    if (value >= 0.01) return value.toFixed(3);
+    const [mantissa, exponent] = value.toExponential(1).split("e");
+    return `${mantissa} × 10${superscript(String(Number(exponent)))}`;
+  };
+  const leakyAlphabet = prStates % 4 !== 0;
   const effectiveSinrDb = db10(effectiveSinrLinear);
   const currentBer = qpskBer(effectiveSinrDb);
 
@@ -903,7 +945,7 @@ export default function Home() {
 
       <section className="intro" id="top">
         <div>
-          <p className="eyebrow">Interactive analytical companion · draft paper</p>
+          <p className="eyebrow">Interactive analytical companion to the paper</p>
           <h1>Time-Modulated Arrays with Signal Encryption for Enhanced Directional Modulation Security</h1>
           <p className="intro-copy">Explore the paper's independently steerable dual-beam TMA: two dominant harmonics, complementary Σ/Δ patterns, pseudorandom delay updates, keyed coherent recovery and authorized off-axis reception.</p>
           <p className="paper-authors">Roberto Maneiro-Catoira · Julio Brégains · José A. García-Naya · Luis Castedo</p>
@@ -1017,7 +1059,7 @@ export default function Home() {
               <div className="metric-grid">
                 <Metric label="Intended-direction SINR γᵦ" value={`${simulation.bobSinr.toFixed(1)} dB`} note={`Σ-key recovery at ${activeTarget}°`} tone="cyan" />
                 <Metric label="Strongest unintended SINR γₑ" value={`${simulation.eveSinr.toFixed(1)} dB`} note={`${(simulation.bobSinr - simulation.eveSinr).toFixed(1)} dB angular contrast`} tone="amber" />
-                <Metric label="Secrecy capacity Cₛ" value={`${simulation.secrecyCapacity.toFixed(2)} bit/s/Hz`} note="paper benchmark ≈ 6.5 bit/s/Hz" tone="violet" />
+                <Metric label="Secrecy capacity Cₛ" value={`${simulation.secrecyCapacity.toFixed(2)} bit/s/Hz`} note="paper benchmark ≈ 6.4 bit/s/Hz" tone="violet" />
               </div>
 
               <section className="panel spectrum-panel">
@@ -1045,15 +1087,16 @@ export default function Home() {
                 <div className="security-sliders">
                   <RangeControl label="Probe angle" value={probeAngle} min={0} max={180} step={0.5} unit="°" digits={1} onChange={setProbeAngle} />
                   <RangeControl label="PR phase states M" value={prStates} min={2} max={100} step={1} onChange={setPrStates} />
-                  <RangeControl label="Timing mismatch" value={syncError} min={0} max={100} step={2} unit="% TPR" onChange={setSyncError} />
+                  <RangeControl label="Timing mismatch" value={syncError} min={0} max={20} step={0.5} unit="% TPR" digits={1} onChange={setSyncError} />
                   <label className="number-control"><span>PR seed</span><input type="number" value={seed} min={1} max={999999} onChange={(event) => setSeed(Number(event.target.value) || 1)} /></label>
                 </div>
+                {leakyAlphabet && <p className="alphabet-warning">M = {prStates} is not a multiple of 4: the scrambled QPSK phase leaks information about the data, so the ≈ 0.5 BER without the key is optimistic. The paper uses M = 64.</p>}
               </section>
 
               <div className="metric-grid security-metrics">
                 <Metric label="Probe Σ-key SINR" value={`${probeSigmaSinr.toFixed(1)} dB`} note={`sum stream at ${probeAngle.toFixed(1)}°`} tone="cyan" />
                 <Metric label="Probe Δ-key SINR" value={`${probeDeltaSinr.toFixed(1)} dB`} note={`difference stream at ${probeAngle.toFixed(1)}°`} tone="amber" />
-                <Metric label="Selected-receiver BER" value={receiver === "eve" ? "≈ 0.5" : formatBer(currentBer)} note={receiver === "eve" ? "pseudorandom phase sequence unavailable" : `${effectiveSinrDb.toFixed(1)} dB effective SINR incl. timing`} tone="violet" />
+                <Metric label="Selected-receiver BER" value={receiver === "eve" ? "≈ 0.5" : formatBer(currentBer)} note={receiver === "eve" ? (leakyAlphabet ? "optimistic: M is not a multiple of 4" : "pseudorandom phase sequence unavailable") : `${effectiveSinrDb.toFixed(1)} dB effective SINR incl. timing`} tone="violet" />
               </div>
 
               <section className="panel constellation-panel">
@@ -1071,7 +1114,7 @@ export default function Home() {
               </section>
 
               <section className="panel timing-panel">
-                <div className="timing-copy"><p className="eyebrow">Synchronization sensitivity · Section IV-C</p><h2>Mismatch degrades gradually</h2><p>The paper gives P<sub>res</sub>/P<sub>useful</sub> = 2Δt/T<sub>PR</sub>. The constellation applies the adjacent key state to the corresponding fraction of samples, while the BER estimate includes the same residual-power law.</p><strong className="timing-ratio">P<sub>res</sub>/P<sub>useful</sub> = {(2 * syncFraction).toFixed(2)}</strong></div>
+                <div className="timing-copy"><p className="eyebrow">Synchronization sensitivity · Section IV-C</p><h2>Mismatch degrades gradually</h2><p>The paper gives P<sub>res</sub>/P<sub>useful</sub> = 2Δt/T<sub>PR</sub> before matched filtering and about (Δt/T<sub>PR</sub>)<sup>2</sup> after it, for T<sub>PR</sub> = T<sub>s</sub>. The BER estimate and the constellation use the post-matched-filter value.{timing.aligned ? null : <> With the current settings, T<sub>PR</sub> ≠ T<sub>s</sub>, so the conservative pre-matched-filter value is used instead.</>}</p><strong className="timing-ratio">Before MF: {formatRatio(timing.beforeMf)}<br />After MF: {formatRatio(timing.afterMf)}{timing.afterMf > 0 ? ` (${db10(timing.afterMf).toFixed(1).replace("-", "−")} dB)` : ""}</strong></div>
                 <div className="timing-rail">{Array.from({ length: 17 }, (_, index) => <i key={index} className={index === frame % 17 ? "current" : ""} style={{ backgroundColor: phases.sigma[index] === phases.delta[index] ? VIOLET : CYAN }} />)}<span className="timing-window" style={{ width: `${Math.max(2, syncError)}%` }} /></div>
               </section>
             </div>
@@ -1109,7 +1152,7 @@ export default function Home() {
                   <div className="roadmap-step complete"><span>EQ. (1)–(6)</span><strong>TMA structure</strong><p>2N isotropic elements, periodic a(t)/b(t) modulation and Σ/Δ decomposition.</p></div>
                   <div className="roadmap-step complete"><span>EQ. (8)–(11)</span><strong>Delay synthesis</strong><p>Independent steering of ω¹,¹ and ω⁻¹,¹ with maxima and complementary nulls.</p></div>
                   <div className="roadmap-step complete"><span>EQ. (12)–(13)</span><strong>Signal encryption</strong><p>Independent pseudorandom phases φΣ and φΔ with keyed coherent recovery.</p></div>
-                  <div className="roadmap-step complete"><span>FIG. 3–4</span><strong>Numerical evidence</strong><p>Angular SINR/BER, QPSK constellations, 21 dB contrast and Cₛ ≈ 6.5 bit/s/Hz.</p></div>
+                  <div className="roadmap-step complete"><span>FIG. 3–4</span><strong>Numerical evidence</strong><p>Angular SINR/BER, QPSK constellations, 20.5 dB contrast and Cₛ ≈ 6.4 bit/s/Hz.</p></div>
                 </div>
               </section>
             </div>
@@ -1119,10 +1162,10 @@ export default function Home() {
 
       <footer>
         <div><strong>Signal-Encrypting DM-TMA Demonstrator</strong><span>Interactive companion to “Time-Modulated Arrays with Signal Encryption for Enhanced Directional Modulation Security”.</span></div>
-        <p>Paper baseline: 2N = 20, f<sub>c</sub> = 2.4 GHz, R<sub>b</sub> = 2 Mbit/s, α = 0.25, M = 50, θ₁ = 110°, θ₂ = 60°, SNR = 25 dB.</p>
+        <p>Paper baseline: 2N = 20, f<sub>c</sub> = 2.4 GHz, R<sub>b</sub> = 2 Mbit/s, α = 0.25, M = 64, θ₁ = 110°, θ₂ = 60°, SNR = 25 dB.</p>
       </footer>
     </main>
   );
 }
 
-export { abs2, arrayFactor, buildPhaseSequence, solveDelays };
+export { abs2, arrayFactor, buildPhaseSequence, qpskBer, solveDelays, timingResidual };

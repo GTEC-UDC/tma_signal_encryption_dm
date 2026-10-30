@@ -54,7 +54,9 @@ test("paper identity and benchmark replace the former project framing", async ()
     /Time-Modulated Arrays with Signal Encryption for Enhanced Directional Modulation Security/,
   );
   assert.doesNotMatch(contents, /\bESA\b|satellite|space-relevant|consortium|proposal definition/i);
-  assert.match(contents, /M = 50/);
+  assert.match(contents, /M = 64/);
+  assert.doesNotMatch(contents, /M = 50\b/);
+  assert.doesNotMatch(contents, /draft paper/i);
   assert.ok(
     model.implementedRelations.includes(
       "h_n(t) = a(t-D_n^1)b(t-D_n^3)/sqrt(2) + a(t-D_n^2)b(t-D_n^4)/sqrt(2)",
@@ -64,7 +66,8 @@ test("paper identity and benchmark replace the former project framing", async ()
   assert.equal(model.paperBaseline.faMHz, 1);
   assert.equal(model.paperBaseline.fbMHz, 2);
   assert.equal(model.paperBaseline.tprMicroseconds, 1);
-  assert.equal(model.paperBaseline.prPhaseStatesM, 50);
+  assert.equal(model.paperBaseline.prPhaseStatesM, 64);
+  assert.equal(model.referenceResults.secrecyCapacityBitsPerSecondPerHzApprox, 6.4);
 });
 
 test("manifest hashes match every distributed file", async () => {

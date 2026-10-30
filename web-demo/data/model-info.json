@@ -30,17 +30,17 @@
     "fbMHz": 2,
     "fbToOccupiedBandwidthRatio": 1.6,
     "snrDb": 25,
-    "prPhaseStatesM": 50,
+    "prPhaseStatesM": 64,
     "zeta": 2,
     "tprMicroseconds": 1,
     "seed": 2606,
     "delayStepPs": 0
   },
   "referenceResults": {
-    "angularSinrContrastDb": 21,
+    "angularSinrContrastDb": 20.5,
     "intendedSinrDb": 25,
-    "strongestUnintendedSinrDbApprox": 4,
-    "secrecyCapacityBitsPerSecondPerHzApprox": 6.5,
+    "strongestUnintendedSinrDbApprox": 4.5,
+    "secrecyCapacityBitsPerSecondPerHzApprox": 6.4,
     "timeModulationEfficiency": 0.66,
     "nearestUnusedHarmonicRelativeDb": -9.54,
     "strongestDegenerateComponentRelativeDb": -26.4
@@ -51,13 +51,16 @@
     "h_n(t) = a(t-D_n^1)b(t-D_n^3)/sqrt(2) + a(t-D_n^2)b(t-D_n^4)/sqrt(2)",
     "D_n^1 and D_n^3 synthesize Sigma patterns",
     "D_n^2 and D_n^4 synthesize Delta patterns",
-    "P_res/P_useful = 2 Delta_t/TPR",
-    "Cs = [log2(1+gamma_b) - log2(1+gamma_e)]+"
+    "P_res/P_useful = 2 Delta_t/TPR before matched filtering",
+    "P_res/P_useful ~ (Delta_t/TPR)^2 after matched filtering, for TPR = Ts",
+    "Cs = [log2(1+gamma_b) - log2(1+gamma_e)]+",
+    "BER = 0.5 erfc(sqrt(gamma)), with gamma per bit as in Fig. 3(b)"
   ],
   "modelAssumptions": [
     "Uniformly excited isotropic array elements",
     "Ideal RF switches except optional delay quantization",
     "No mutual coupling or RF losses",
-    "Coherent QPSK receiver synchronized to the pseudorandom key"
+    "Coherent QPSK receiver synchronized to the pseudorandom key",
+    "M multiple of 4, so that scrambled QPSK symbols are independent of the data without the key"
   ]
 }

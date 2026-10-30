@@ -1,13 +1,13 @@
 {
   "package": "TMA_Signal_Encryption_Demonstrator_Web",
   "version": "1.0",
-  "generatedAt": "2026-10-29T21:46:56.404Z",
+  "generatedAt": "2026-10-30T12:03:25.922Z",
   "offline": true,
   "files": [
     {
       "path": "README_ES.txt",
-      "bytes": 3035,
-      "sha256": "a21e8be84e76d2c3d1aad2ef82604bbf885e3eeed3bdc3788c05a6e1a6fa8bf2"
+      "bytes": 3305,
+      "sha256": "a753629a4acde7783a8ad3efe0de16bdd0291ac9e240547ec7b6315f0265ec35"
     },
     {
       "path": "THIRD_PARTY_NOTICES.md",
@@ -16,8 +16,8 @@
     },
     {
       "path": "app.js",
-      "bytes": 237041,
-      "sha256": "1eb1b494d4d8eb0a0c9d7ae4be0b2381cfad436c4a420d0e0148715790f91aca"
+      "bytes": 238349,
+      "sha256": "0142fcf6300feeb892d4932c62ee111478f68a5ecaac6ceedea28256ae1edbfb"
     },
     {
       "path": "app.js.LEGAL.txt",
@@ -26,8 +26,8 @@
     },
     {
       "path": "data/model-info.json",
-      "bytes": 1895,
-      "sha256": "f59c4ce3cd09e5abbfbb9078370b124f7cec31fbae3919a8af3cacb13fe4ca17"
+      "bytes": 2172,
+      "sha256": "4af266d9c45f553ba230a714beb6b098a329480041be91ef1ec1b10103b51a49"
     },
     {
       "path": "favicon.svg",
@@ -56,8 +56,8 @@
     },
     {
       "path": "styles.css",
-      "bytes": 27001,
-      "sha256": "7a35b6226015aa3e8391d7f87666bd3c144c0c6e353d13ecc4175c1c1b2ecabc"
+      "bytes": 27175,
+      "sha256": "586f0169f56b8643c3d74207c33e577f89677c6d4381200d1f64f3168c147a47"
     }
   ]
 }

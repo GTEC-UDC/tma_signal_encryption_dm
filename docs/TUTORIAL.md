@@ -180,11 +180,16 @@ C_s=\left[\log_2(1+\gamma_b)-\log_2(1+\gamma_e)\right]^+, \tag{7}
 where $\gamma_b$ corresponds to the intended direction and $\gamma_e$ to the
 most favorable unintended point outside a ±8° sector around the main beam.
 
-The BER estimate uses the coherent QPSK expression. In no-key mode,
+The BER estimate uses the coherent QPSK expression
+$\mathrm{BER}=\tfrac{1}{2}\operatorname{erfc}\sqrt{\gamma}$, with the SINR
+taken per bit, which is the convention of the BER curves in Fig. 3(b) of the
+paper. In no-key mode,
 $\mathrm{BER}\simeq 0.5$ is displayed, corresponding to random decisions; this
 holds when $M$ is a multiple of four ([Section 3.2](#32-bandwidth-and-pseudorandom-updating)).
 
 ## 4. Interface organization
+
+![Header, derived-quantity strip, left panel and first tab of the demonstrator](img/overview.png)
 
 The window is divided into four areas:
 
@@ -281,6 +286,8 @@ only one of the complementary Σ or Δ contributions is recovered.
 
 ## 7. Tab 01: `Beams & spectrum`
 
+![Tab 01 with the benchmark of the paper](img/tab1.png)
+
 ### 7.1 Harmonic selector
 
 The `ω⁻¹,¹ · θ₂` and `ω¹,¹ · θ₁` buttons select the harmonic used for:
@@ -350,6 +357,8 @@ $if_a+f_b$ relative to $f_c$ is shown.
 
 ## 8. Tab 02: `Encrypted link`
 
+![Tab 02 with the intended Σ-key receiver](img/tab2.png)
+
 This tab makes it possible to compare the received signal before descrambling
 with the recovery obtained by different receivers. The 180 QPSK observations
 are deterministic for the same parameter set, seed, and angle.
@@ -371,8 +380,8 @@ receiver/key type is retained.
 | Control | Range; step | Paper | Effect | Recommended use |
 |---|---|---|---|---|
 | `Probe angle` | 0–180°; 0.5° | 110° for $\omega^{1,1}$ | Angle at which the two probe SINRs and the constellations are computed. It does not move the beams; it only moves the observation point. | Manually scan the angular domain and locate reception windows. |
-| `PR phase states M` | 2–100; 1 | 64 | Number of equiprobable phases in Eq. (5). It changes the sequence, instantaneous phases, and delays, but not the ideal pattern envelope with continuous delays. Use multiples of four; otherwise the scrambled phase leaks data information ([Section 3.2](#32-bandwidth-and-pseudorandom-updating)). | Compare small and dense PR alphabets. |
-| `Timing mismatch` | 0–100% of $T_{\mathrm{PR}}$; 2% | 0% | Normalized timing mismatch between transmitter and receiver. A fraction of the samples is compensated using the adjacent state, and the BER estimate includes the residual power after matched filtering ([Section 8.5](#85-timing-sensitivity)). | Evaluate sensitivity to synchronization. |
+| `PR phase states M` | 2–100; 1 | 64 | Number of equiprobable phases in Eq. (5). It changes the sequence, instantaneous phases, and delays, but not the ideal pattern envelope with continuous delays. Use multiples of four; otherwise the scrambled phase leaks data information ([Section 3.2](#32-bandwidth-and-pseudorandom-updating)), and a warning is displayed. | Compare small and dense PR alphabets. |
+| `Timing mismatch` | 0–20% of $T_{\mathrm{PR}}$; 0.5% | 0% | Normalized timing offset of the descrambling sequence. The BER estimate and the processed constellation include the residual power after matched filtering ([Section 8.5](#85-timing-sensitivity)). | Evaluate sensitivity to synchronization. |
 | `PR seed` | 1–999999; numeric field | 2606 | Seed of the deterministic pseudorandom generator. The same seed reproduces the same sequence; a different seed produces a different realization. | Repeatability, realization comparison, and scenario documentation. |
 
 ### 8.3 `Next key state` button
@@ -428,7 +437,19 @@ approximations for small offsets. For example:
 Degradation is therefore gradual rather than an immediate binary failure, and
 offsets of a few percent of $T_{\mathrm{PR}}$ have a small impact.
 
+The panel displays both ratios, and the effective SINR shown below the BER
+uses the one after matched filtering. The processed constellation illustrates
+the same value: every descrambled sample mixes a small fraction of the adjacent
+key state, so the clouds widen slightly without rotating. Eq. (10) was derived
+for $T_{\mathrm{PR}}=T_s$, which holds when $\zeta=(f_b/B_f)(1+\alpha)$, as in
+the benchmark. For other settings of `Update factor ζ`, `Spectral spacing` or
+`RRC roll-off`, the demonstrator states it and uses the conservative value of
+Eq. (9) instead; the constellation then applies the adjacent key state to that
+fraction of the samples.
+
 ## 9. Tab 03: `Delay synthesis`
+
+![Tab 03: architecture and delay table of the first PR state](img/tab3.png)
 
 ### 9.1 Architecture diagram
 
@@ -698,7 +719,7 @@ unknown; it is not an estimate obtained from valid coherent demodulation. It
 is justified when $M$ is a multiple of four, because the scrambled symbols are
 then statistically independent of the data. For other values of $M$, an
 eavesdropper could extract part of the information, so the displayed value is
-optimistic.
+optimistic; the demonstrator then displays a warning.
 
 **Why do the delays change when the state advances but the beam does not?**
 The common pseudorandom phase changes between intervals, while the relative

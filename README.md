@@ -18,11 +18,6 @@ required at the transmitter.
 **Live demonstrator:** <https://gtec-udc.github.io/tma_signal_encryption_dm/>
 · **User tutorial:** [`docs/TUTORIAL.md`](docs/TUTORIAL.md)
 
-> **Status: preview.** The demonstrator is being updated to the final
-> parameters of the letter (M = 64 scrambling phases instead of 50) and to the
-> timing-offset model of its revised version. The tutorial already describes
-> the final values.
-
 ## Contents
 
 | Folder | Content |
