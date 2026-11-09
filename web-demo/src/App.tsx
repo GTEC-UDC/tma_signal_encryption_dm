@@ -75,11 +75,12 @@ function erf(value: number): number {
   return sign * y;
 }
 
-/** Gray-coded QPSK bit error rate, 0.5 erfc(sqrt(gamma)), with the SINR taken
- *  per bit; this is the convention of the BER curves in Fig. 3(b) of the paper. */
+/** Gray-coded QPSK bit error rate, Q(sqrt(gamma)) = 0.5 erfc(sqrt(gamma/2)),
+ *  with the SINR taken as a symbol-level power ratio, as for the secrecy
+ *  capacity and in Fig. 3(b) of the paper. */
 function qpskBer(sinrDb: number): number {
   const gamma = dbToLinear(sinrDb);
-  return Math.max(0, 0.5 * (1 - erf(Math.sqrt(gamma))));
+  return Math.max(0, 0.5 * (1 - erf(Math.sqrt(gamma / 2))));
 }
 
 /**

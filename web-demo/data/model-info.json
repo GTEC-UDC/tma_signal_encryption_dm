@@ -54,7 +54,7 @@
     "P_res/P_useful = 2 Delta_t/TPR before matched filtering",
     "P_res/P_useful ~ (Delta_t/TPR)^2 after matched filtering, for TPR = Ts",
     "Cs = [log2(1+gamma_b) - log2(1+gamma_e)]+",
-    "BER = 0.5 erfc(sqrt(gamma)), with gamma per bit as in Fig. 3(b)"
+    "BER = Q(sqrt(gamma)) = 0.5 erfc(sqrt(gamma/2)), with gamma per symbol as in Fig. 3(b)"
   ],
   "modelAssumptions": [
     "Uniformly excited isotropic array elements",

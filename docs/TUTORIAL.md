@@ -181,9 +181,9 @@ where $\gamma_b$ corresponds to the intended direction and $\gamma_e$ to the
 most favorable unintended point outside a ±8° sector around the main beam.
 
 The BER estimate uses the coherent QPSK expression
-$\mathrm{BER}=\tfrac{1}{2}\mathrm{erfc}\sqrt{\gamma}$, with the SINR
-taken per bit, which is the convention of the BER curves in Fig. 3(b) of the
-paper. In no-key mode,
+$\mathrm{BER}=Q(\sqrt{\gamma})=\tfrac{1}{2}\mathrm{erfc}\sqrt{\gamma/2}$
+(Gray-coded QPSK), with the SINR taken as a symbol-level power ratio, as for
+the secrecy capacity and in Fig. 3(b) of the paper. In no-key mode,
 $\mathrm{BER}\simeq 0.5$ is displayed, corresponding to random decisions; this
 holds when $M$ is a multiple of four ([Section 3.2](#32-bandwidth-and-pseudorandom-updating)).
 

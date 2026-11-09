@@ -109,9 +109,9 @@ assert.equal(misaligned.afterMf, misaligned.beforeMf);
 const effectiveDb = -10 * Math.log10(10 ** (-25 / 10) + aligned.afterMf);
 assert.ok(Math.abs(effectiveDb - 22.47) < 0.01);
 
-// BER convention of Fig. 3(b): 0.5 erfc(sqrt(gamma)).
-assert.ok(Math.abs(qpskBer(4.47) - 8.9e-3) < 0.3e-3);
-assert.ok(qpskBer(11.87) > 1e-8 && qpskBer(11.87) < 2e-8);
+// QPSK BER with a symbol-level SINR, Q(sqrt(gamma)), as in Fig. 3(b).
+assert.ok(Math.abs(qpskBer(4.47) - 4.73e-2) < 0.05e-2);
+assert.ok(Math.abs(qpskBer(11.87) - 4.4e-5) < 0.1e-5);
 
 // Phase alphabet of the paper.
 for (const phase of buildPhaseSequence(2606, 64).sigma) {
