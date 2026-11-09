@@ -1,5 +1,7 @@
 # Signal-encrypting DM-TMA: interactive web demonstrator
 
+![How the signal-encrypting DM-TMA works: the pseudorandom delays of the switches are the key; at the intended direction the Δ pattern has a null, so only a receiver there with the key recovers clean QPSK, while an eavesdropper elsewhere, even with the key, or any receiver without the key, does not](docs/img/cover.svg)
+
 Companion software for the letter
 
 > R. Maneiro-Catoira, J. Brégains, J. A. García-Naya, and L. Castedo,
@@ -23,7 +25,8 @@ required at the transmitter.
 | Folder | Content |
 |---|---|
 | [`web-demo/`](web-demo/) | Interactive web demonstrator: ready-to-run build (`index.html`, `app.js`, `styles.css`) and its complete TypeScript/React source, build and test scripts. |
-| [`docs/`](docs/) | [User tutorial](docs/TUTORIAL.md) of the demonstrator. |
+| [`docs/`](docs/) | [User tutorial](docs/TUTORIAL.md) of the demonstrator and the cover image above (`docs/img/cover.svg`, `cover.png`). |
+| [`tools/`](tools/) | `make_cover.py`, which generates the cover image from the model of the letter (Python, numpy, matplotlib). |
 
 ### Web demonstrator
 
@@ -71,13 +74,13 @@ Citation metadata are also provided in [`CITATION.cff`](CITATION.cff).
 
 ## Use of AI assistants
 
-AI assistants were used in the development of the web demonstrator and its
-tutorial. The authors reviewed and validated the models, equations and results
+AI assistants were used in the development of the web demonstrator, its
+tutorial and the cover image. The authors reviewed and validated the models, equations and results
 against the analysis of the letter.
 
 ## License
 
-- Source code (`web-demo/`): [MIT License](LICENSE).
+- Source code (`web-demo/`, `tools/`): [MIT License](LICENSE).
 - Documentation (`docs/`): [Creative Commons Attribution 4.0 International
   (CC BY 4.0)](docs/LICENSE.md).
 - Third-party components bundled in `web-demo/app.js` (React, React DOM and
