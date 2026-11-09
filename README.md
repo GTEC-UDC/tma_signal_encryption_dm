@@ -1,5 +1,7 @@
 # Signal-encrypting DM-TMA: interactive web demonstrator
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.24092500.svg)](https://doi.org/10.5281/zenodo.24092500)
+
 ![How the signal-encrypting DM-TMA works: the pseudorandom delays of the switches are the key; at the intended direction the Δ pattern has a null, so only a receiver there with the key recovers clean QPSK, while an eavesdropper elsewhere, even with the key, or any receiver without the key, does not](docs/img/cover.svg)
 
 Companion software for the letter
@@ -68,7 +70,11 @@ If you use this software, please cite the letter above and this repository:
 
 > R. Maneiro-Catoira, J. Brégains, J. A. García-Naya, and L. Castedo,
 > *Signal-encrypting DM-TMA: interactive web demonstrator*,
-> Zenodo, 2026. (The DOI will be available with the first release.)
+> Zenodo, 2026. doi: [10.5281/zenodo.24092500](https://doi.org/10.5281/zenodo.24092500)
+
+This DOI always resolves to the latest version. Each release also has its own
+DOI (version 1.0.0: [10.5281/zenodo.24092502](https://doi.org/10.5281/zenodo.24092502)),
+listed on the Zenodo record.
 
 Citation metadata are also provided in [`CITATION.cff`](CITATION.cff).
 
